@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "7wbfJ04Ttz/KijH5BCq5ewoLkf8lUZ+TTtIA8Z4h3nA+LpAUdHHMLoTqtvmDAOrkvf2MU3k2+ybdRdZagas49g==",
+  "success": true,
+  "projectFilePath": "D:\\Projects\\C#\\Ezebnebnik\\Ezebnebnik\\Ezebnebnik.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Misha\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
