@@ -20,14 +20,14 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <DatePicker x:Name="DataPicker" VerticalAlignment="Center" Height="33" Grid.ColumnSpan="3"/>
-        <ListBox x:Name="BoxList" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="1" Grid.Row="1"/>
+        <DatePicker x:Name="DataPicker" VerticalAlignment="Center" Height="33" Grid.ColumnSpan="3" SelectedDateChanged="DataPicker_SelectedDateChanged"/>
+        <ListBox x:Name="BoxList" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="1" Grid.Row="1" SelectionChanged="BoxList_SelectionChanged" DisplayMemberPath="Title"/>
         <TextBlock Text="Описание" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" Grid.Column="2"/>
-        <TextBox x:Name="Name" Text="" HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" IsEnabled="False"/>
+        <TextBox x:Name="Name" Text="" HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
         <TextBlock Text="Название" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" Grid.Column="1"/>
-        <TextBox x:Name="Description_box" Text="" HorizontalAlignment="Stretch" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" IsEnabled="False"/>
-        <Button Content="Удалить" Grid.Row="3" VerticalAlignment="Top" Height="30"/>
-        <Button Grid.Column="1" Content="Создать" Grid.Row="3" VerticalAlignment="Top" Height="30" Click="Button_Click"/>
-        <Button Grid.Column="2" Content="Изменить" Grid.Row="3" VerticalAlignment="Top" Height="30"/>
+        <TextBox x:Name="Description_box" Text="" HorizontalAlignment="Stretch" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center"/>
+        <Button Content="Удалить" Grid.Row="3" VerticalAlignment="Top" Height="30" Click="DELETE_Click"/>
+        <Button Grid.Column="1" Content="Создать" Grid.Row="3" VerticalAlignment="Top" Height="30" Click="Create_Click"/>
+        <Button Grid.Column="2" Content="Изменить" Grid.Row="3" VerticalAlignment="Top" Height="30" Click="Change_Click"/>
     </Grid>
 </Window>

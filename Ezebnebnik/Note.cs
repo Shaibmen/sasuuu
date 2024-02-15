@@ -9,8 +9,8 @@ namespace Ezebnebnik
         internal class Note
         {
             public string Title { get; set; }
-            public string Description { get; set; }
-            public DateTime Data { get; set; }
+            public string Description;
+            public DateTime Data;
 
             public Note(string title, string description, DateTime date)
             {

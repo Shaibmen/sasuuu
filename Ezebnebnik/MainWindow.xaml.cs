@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Security.Policy;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -23,58 +24,115 @@ namespace Ezebnebnik
     /// </summary>
     public partial class MainWindow : Window
     {
+        List<Note> zametka = new List<Note>();
         public static class Serializer
         {
-            public static void SerializeToJson<T>(T xyi, string filePath)
+            public static void SerializeToJson<T>(T xyi, string filename)
             {
                 string json = JsonConvert.SerializeObject(xyi);
-                File.WriteAllText(filePath, json);
+                File.WriteAllText(filename, json);
             }
 
-            public static T DeserializeFromJson<T>(string filePath)
+            public static T DeserializeFromJson<T>(string filename)
             {
-                string json = File.ReadAllText(filePath);
+                string json = File.ReadAllText(filename);
                 return JsonConvert.DeserializeObject<T>(json);
             }
         }
-
-        private List<Note> zametka;
-        private string filePath = "notes.json";
-
-
         public MainWindow()
         {
             InitializeComponent();
-            zametka = Serializer.DeserializeFromJson(filePath);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {   
-            Name.IsEnabled = true;
-            Description_box.IsEnabled = true;
-
-        }
-
-        private void CreateNote()
+        private void Create_Click(object sender, RoutedEventArgs e)
         {
-            // Получаем введенные данные из полей ввода
-            string title = Name.Text;
-            string description = Description_box.Text;
-            DateTime date = DateTime.Now; // Текущая дата и время
+            
+            if (Name.Text == "" && Description_box.Text == "" && DataPicker.Text == "")
+            {
+                return;
+            } 
+            else
+            {
+                zametka = Serializer.DeserializeFromJson<List<Note>>(DataPicker.Text + ".json");
+                Note notes = new Note(Name.Text, Description_box.Text, Convert.ToDateTime(DataPicker.Text));
+                zametka.Add(notes);
+                string filename = DataPicker.Text + ".json";
+                Serializer.SerializeToJson(zametka, filename);
+                BoxList.ItemsSource = zametka;
 
-            // Создаем новую заметку
-            Note newNote = new Note(title, description, date);
+            }
+        }
 
-            // Сохраняем заметку
-            BoxList.ItemsSource.
+        private void BoxList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Note listbox = BoxList.SelectedItem as Note;
+            if (listbox == null)
+            {
+                Name.Text = " ";
+                Description_box.Text = " ";
+            }
+            else
+            {
+                Description_box.Text = listbox.Description;
+                Name.Text = listbox.Title;
+            }
+        }
 
-            // Очищаем поля ввода
-            Name.Text = string.Empty;
-            Description_box.Text = string.Empty;
+        private void DataPicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!File.Exists(DataPicker.Text + ".json"))
+            {
+                File.WriteAllText(DataPicker.Text + ".json", "[]");
+                BoxList.ItemsSource = zametka;
+                BoxList.ItemsSource = Serializer.DeserializeFromJson<List<Note>>(DataPicker.Text + ".json");
+                Name.Text = "";
+                Description_box.Text = "";
+            } 
+            else
+            {
+                BoxList.ItemsSource = zametka;
+                BoxList.ItemsSource = Serializer.DeserializeFromJson<List<Note>>(DataPicker.Text + ".json");
+                Name.Text = "";
+                Description_box.Text = "";
+            }
+        }
 
-            // Закрываем окно создания заметки
-            this.Close();
+        private void DELETE_Click(object sender, RoutedEventArgs e)
+        {
+            if (BoxList.SelectedItem == null)
+            {
+                return;
+            }
+            Note selectedNote = (Note)BoxList.SelectedItem;
+
+            zametka.Remove(selectedNote);
+
+            string filename = DataPicker.Text + ".json";
+            Serializer.SerializeToJson(zametka, filename);
+
+            BoxList.ItemsSource = null;
+            BoxList.ItemsSource = zametka;
+
+            Name.Text = "";
+            Description_box.Text = "";
+        }
+
+        private void Change_Click(object sender, RoutedEventArgs e)
+        {
+            Note selectedNote = (Note)BoxList.SelectedItem;
+            string filename = DataPicker.Text + ".json";
+
+            selectedNote.Title = Name.Text;
+            selectedNote.Description = Description_box.Text;
+
+            Serializer.SerializeToJson(zametka, filename);
+
+            BoxList.ItemsSource = null;
+            BoxList.ItemsSource = zametka;
+
+            Name.Text = "";
+            Description_box.Text = "";
+
         }
     }
-        
 }
